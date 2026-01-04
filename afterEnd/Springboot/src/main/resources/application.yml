@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:mysql://master:3306/douban
+    username: root
+    password: 123456
+  kafka:
+    bootstrap-servers: master:9092
+    producer:
+      acks: all
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 0
+    consumer:
+      group-id: douban
+      auto-offset-reset: earliest
+      enable-auto-commit: true
+      auto-commit-interval: 1s
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      max-poll-records: 2
+      properties:
+        session.timeout.ms: 30000
+        max.poll.interval.ms: 300000
+        request.timeout.ms: 30000
+        allow.auto.create.topics: true
+        hearbeat.interval.ms: 30000
+    listener:
+      missing-topics-fatal: true
+      type: batch
+      concurrency: 2
+    template:
+      default-topic: "douban"
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+server:
+  port: 8081
